@@ -52,14 +52,7 @@
       require(["esri/views/MapView", "esri/WebMap", "esri/widgets/Legend",
         "esri/widgets/Expand", "esri/widgets/Track",  "esri/widgets/Bookmarks",
         "esri/widgets/Expand","esri/widgets/CoordinateConversion","esri/widgets/Directions","esri/widgets/LayerList","esri/widgets/Search"], function(MapView, WebMap, Expand, Legend,Track,Map,Bookmarks,Directions,LayerList, Search) {
-        /************************************************************
-         * Creates a new WebMap instance. A WebMap must reference
-         * a PortalItem ID that represents a WebMap saved to
-         * arcgis.com or an on-premise portal.
-         *
-         * To load a WebMap from an on-premise portal, set the portal
-         * url with esriConfig.portalUrl.
-         ************************************************************/
+          
         var webmap = new WebMap({
           portalItem: {
             // autocasts as new PortalItem()
@@ -69,9 +62,7 @@
         var map = new Map({
           basemap: "topo"
         });
-        /************************************************************
-         * Set the WebMap instance to the map property in a MapView.
-         ************************************************************/
+        
         var view = new MapView({
           map: webmap,
           container: "viewDiv"
@@ -79,7 +70,7 @@
         const legend = new Expand({
           content: new Legend({
             view: view,
-            style: "card" // other styles include 'classic'
+            style: "card" 
           }),
           view: view,
           expanded: true
@@ -88,13 +79,10 @@
 
         var directionsWidget = new Directions({
           view: view,
-          // Point the URL to a valid route service that uses an
-          // ArcGIS Online hosted service proxy instead of the default service
           routeServiceUrl:
             "https://utility.arcgis.com/usrsvcs/appservices/srsKxBIxJZB0pTZ0/rest/services/World/Route/NAServer/Route_World"
         });
 
-        // Add the Directions widget to the top right corner of the view
         view.ui.add(directionsWidget, {
           position: "top-right"
         });
@@ -103,8 +91,6 @@
         });
         view.ui.add(track, "top-right");
 
-        // The sample will start tracking your location
-        // once the view becomes ready
         view.when(function() {
           track.start();
         });
@@ -113,14 +99,12 @@
             view: view
           });
 
-          // Add widget to the top right corner of the view
           view.ui.add(layerList, "bottom-right");
         });
         var searchWidget = new Search({
           view: view
         });
 
-        // Add the search widget to the top right corner of the view
         view.ui.add(searchWidget, {
           position: "top-left"
         });
