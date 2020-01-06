@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <H2>Lab 2 Task 3</H2>
+  <li><a href="./lab2.html">Lab 2</a></li>
+  <h2>Web Mapping with Widgets- Task 2</h2>
+  <a
+    >Below is a custom web map with widgets implemented</a
+  >
+  <a>Widget 1: Layer List</a>
+  <a>Widget 2: My Location widget</a>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>Basic Webmap Design Lab 2</title>
+
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+      .esri-feature {
+        letter-spacing: 0em;
+        line-height: 1.55rem;
+        font-feature-settings: "liga" 1, "calt" 0;
+        background: #fff;
+        padding: 1em;
+      }
+      #logoDiv {
+        padding: 12px;
+        background-color: black;
+        color: pink;
+        text-align: center;
+        width: 100px;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.14/esri/themes/light/main.css"
+    />
+
+    <script src="https://js.arcgis.com/4.14/"></script>
+
+    <script>
+      require(["esri/views/MapView", "esri/WebMap", "esri/widgets/Legend",
+        "esri/widgets/Expand", "esri/widgets/Track",  "esri/widgets/Bookmarks",
+        "esri/widgets/Expand","esri/widgets/CoordinateConversion","esri/widgets/Directions","esri/widgets/LayerList","esri/widgets/Search"], function(MapView, WebMap, Expand, Legend,Track,Map,Bookmarks,Directions,LayerList, Search) {
+        /************************************************************
+         * Creates a new WebMap instance. A WebMap must reference
+         * a PortalItem ID that represents a WebMap saved to
+         * arcgis.com or an on-premise portal.
+         *
+         * To load a WebMap from an on-premise portal, set the portal
+         * url with esriConfig.portalUrl.
+         ************************************************************/
+        var webmap = new WebMap({
+          portalItem: {
+            // autocasts as new PortalItem()
+            id: "f2e9b762544945f390ca4ac3671cfa72"
+          }
+        });
+        var map = new Map({
+          basemap: "topo"
+        });
+        /************************************************************
+         * Set the WebMap instance to the map property in a MapView.
+         ************************************************************/
+        var view = new MapView({
+          map: webmap,
+          container: "viewDiv"
+        });
+        const legend = new Expand({
+          content: new Legend({
+            view: view,
+            style: "card" // other styles include 'classic'
+          }),
+          view: view,
+          expanded: true
+        });
+        view.ui.add(legend, "bottom-left");
+
+        var directionsWidget = new Directions({
+          view: view,
+          // Point the URL to a valid route service that uses an
+          // ArcGIS Online hosted service proxy instead of the default service
+          routeServiceUrl:
+            "https://utility.arcgis.com/usrsvcs/appservices/srsKxBIxJZB0pTZ0/rest/services/World/Route/NAServer/Route_World"
+        });
+
+        // Add the Directions widget to the top right corner of the view
+        view.ui.add(directionsWidget, {
+          position: "top-right"
+        });
+        var track = new Track({
+          view: view
+        });
+        view.ui.add(track, "top-right");
+
+        // The sample will start tracking your location
+        // once the view becomes ready
+        view.when(function() {
+          track.start();
+        });
+        view.when(function() {
+          var layerList = new LayerList({
+            view: view
+          });
+
+          // Add widget to the top right corner of the view
+          view.ui.add(layerList, "bottom-right");
+        });
+        var searchWidget = new Search({
+          view: view
+        });
+
+        // Add the search widget to the top right corner of the view
+        view.ui.add(searchWidget, {
+          position: "top-left"
+        });
+    });
+    </script>
+  </head>
+  <body
+    class="calcite">
+    <div id="viewDiv"></div>
+  </body>
+</html>
